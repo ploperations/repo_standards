@@ -3,6 +3,19 @@
 All repos within ploperations should follow these standards as closely as
 possible to ensure a consistent experience across all projects
 
+#### Table of Contents
+
+* [Creating a new repo](#creating-a-new-repo)
+  * [Repo creation with Travis-CI testing enabled](#repo-creation-with-travis-ci-testing-enabled)
+  * [Settings in the GitHub interface](#settings-in-the-github-interface)
+  * [Integrate with HipChat](#integrate-with-hipchat)
+* [Puppet module standards](#puppet-module-standards)
+  * [PDK](#pdk)
+  * [metadata.json](#metadata.json)
+  * [Testing](#testing)
+  * [Documentation](#documentation)
+  * [License](#license)
+  * [Puppet Forge](#puppet-forge)
 
 ## Creating a new repo
 
@@ -98,14 +111,17 @@ It is expected that every module will have the following:
   ```markdown
   ## Reference
 
-  This module is documented via `puppet strings generate --format markdown`.
+  This module is documented via
+  `pdk bundle exec puppet strings generate --format markdown`.
   Please see [REFERENCE.md](REFERENCE.md) for more info.
   ```
 - a `REFERENCE.md` that is up-to-date
 - all parts of the module documeted in the methodology expected by
   `puppet strings`. This includes both the untagged description and the
   `@summary` tag. Those lines may be the same but both are needed due to the
-  way that `puppet strings` works.
+  way that `puppet strings` works. More details on how to do this can be found
+  in the
+  [Puppet Strings style guide](https://puppet.com/docs/puppet/6.1/puppet_strings_style.html).
 
 
 ### License
