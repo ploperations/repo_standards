@@ -8,7 +8,6 @@ possible to ensure a consistent experience across all projects
 * [Creating a new repo](#creating-a-new-repo)
   * [Repo creation with Travis-CI testing enabled](#repo-creation-with-travis-ci-testing-enabled)
   * [Settings in the GitHub interface](#settings-in-the-github-interface)
-  * [Integrate with HipChat](#integrate-with-hipchat)
 * [Puppet module standards](#puppet-module-standards)
   * [PDK](#pdk)
   * [metadata.json](#metadata.json)
@@ -49,15 +48,6 @@ these settings:
 4. Under `Rule settings` check all 5 boxes. Set them as shown here:
    ![rule-settings-image](rule-settings-image.png)
 5. Click the green `Create` button at the bottom
-
-
-### Integrate with HipChat
-
-Please contact someone who had admin rights in our HipChat and ask them to go
-to [https://puppet.hipchat.com/addons/github-for-hipchat/configure?room=3139955](https://puppet.hipchat.com/addons/github-for-hipchat/configure?room=3139955) 
-and setup the new repo with the following settings:
-
-![hipchat-repo-settings](hipchat-repo-settings.png)
 
 
 ## Puppet module standards
