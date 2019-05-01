@@ -37,6 +37,8 @@ git push -u origin master
 travis enable
 ```
 
+If Travis complains about not knowing about the repository you may just need to
+wait a minute or two and then run `travis enable` again.
 
 ### Label setup
 
@@ -68,6 +70,10 @@ these settings:
 4. Under `Rule settings` check all 5 boxes. Set them as shown here:
    ![rule-settings-image](rule-settings-image.png)
 5. Click the green `Create` button at the bottom
+
+Additionally, please follow the instructions at
+https://confluence.puppetlabs.com/x/tQigBw to setup integration with Jira.
+
 
 
 ## Puppet module standards
@@ -133,8 +139,15 @@ It is expected that every module will have the following:
     This module is documented via
     `pdk bundle exec puppet strings generate --format markdown`.
     Please see [REFERENCE.md](REFERENCE.md) for more info.
+
+    ## Changelog
+
+    [CHANGELOG.md](CHANGELOG.md) is generated prior to each release via
+    `pdk bundle exec rake changelog`. This proecss relies on labels that are applied
+    to each pull request.
     ```
 - a `REFERENCE.md` that is up-to-date
+- a `CHANGELOG.md` that is updated prior to each release
 - all parts of the module documeted in the methodology expected by
   `puppet strings`. This includes both the untagged description and the
   `@summary` tag. Those lines may be the same but both are needed due to the
@@ -145,7 +158,6 @@ It is expected that every module will have the following:
   ```
   pdk bundle exec rake changelog
   ```
-
 
 ### License
 
