@@ -32,10 +32,8 @@ git init
 git add .
 git commit -am 'Initial comit'
 hub create -d 'some description for your repo' ploperations/<repo name>
-git push -u origin master
+git push -u origin main
 ```
-
-> Note: Travis CI will be enabled automatically
 
 ### Label setup
 
@@ -56,22 +54,29 @@ There is also a company blog post about using this tool at https://puppet.com/bl
 Once your repo is created you will need to go to the web interface and edit
 these settings:
 
-1. Click `Branches`
-2. Click `Add rule`
-3. In the `Apply rule to` box type `master`
-4. Under `Rule settings` check all 5 boxes. Set them as shown here:
-   ![rule-settings-image](rule-settings-image.png)
-5. Click the green `Create` button at the bottom
+1. Configure protected branch rules:
+    1. Navigate to `Settings --> Branches` and click `Add rule`
+    1. In the `Branch name pattern` box type `main`
+    1. Under `Protect matching branches` check all 5 boxes. Set them as shown here:
+      ![rule-settings-image](rule-settings-image.png)
+    1. Click the green `Create` button at the bottom
+1. Automatically delete merged branches
+    1. Navigate to `Settings --> Options --> Merge button` and enable `Automatically delete head branches`.
 
 ### Integrate with Jira
 
-Please follow the instructions at https://confluence.puppetlabs.com/x/tQigBw to setup integration with Jira.
+Please follow the instructions at https://confluence.puppetlabs.com/display/HELP/GitHub in the section titled "Integrating GitHub Repos with Jira via JIRA DVCS" to setup integration with Jira.
 
 ## Puppet module standards
 
-### PDK
+### PDK & GitHub Actions
 
-It is expected that all modules here are utilizing the [PDK](https://puppet.com/docs/pdk/latest). `pdk validate` is expected to pass both locally and via the included `.travis.yaml` (note that Travis-CI was enabled during repo setup).
+It is expected that all modules here are utilizing the [PDK](https://puppet.com/docs/pdk/latest). `pdk validate` and `pdk test unit` is expected to pass both locally and via GitHub Actions with the file `ci.yml` included in this repo.
+
+Setup PDK and GitHub Actions:
+1. Copy `templates/ci.yml` in this repo to the destination repo to `.github/workflows/ci.yml`
+1. Copy `templates/.sync.yml` in this repo to the root of the destination repo.
+    1. You can now run `pdk update` or `pdk convert` to update the repo with the standard settings.
 
 ### metadata.json
 
@@ -99,7 +104,7 @@ describe '<insert module name here>' do
 end
 ```
 
-The above can be generated via `pdk new test <module_name>`.
+The above can be generated via `pdk new test -u <module_name>`.
 
 Naturally, if your module does not utilize `init.pp` then the above will need to be adjusted. If your module contains functions then please also generate tests that verify they work as expected.
 
@@ -115,7 +120,7 @@ It is expected that every module will have the following:
     ![](https://img.shields.io/puppetforge/pdk-version/ploperations/<MODULE-NAME>.svg?style=popout)
     ![](https://img.shields.io/puppetforge/v/ploperations/<MODULE-NAME>.svg?style=popout)
     ![](https://img.shields.io/puppetforge/dt/ploperations/<MODULE-NAME>.svg?style=popout)
-    [![Build Status](https://travis-ci.org/ploperations/ploperations-<MODULE-NAME>.svg?branch=master)](https://travis-ci.org/ploperations/ploperations-<MODULE-NAME>)
+    [![Build Status](https://github.com/ploperations/ploperations-<MODULE-NAME>/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ploperations/ploperations-<MODULE-NAME>/actions/workflows/ci.yml)
     ```
 
   - this at the bottom:
