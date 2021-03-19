@@ -41,12 +41,10 @@ git push -u origin master
 
 We utilize a standardized set of labels to facilitate using GitHub Changelog Generator. These are maintained via `labels.rb` in [underscorgan/community_management](https://github.com/underscorgan/community_management). To set it up you will have to create a personal access token with the repo box checked.
 
-Whenever a new module repo is created or any time you want to make sure our repos have the right labels on them you can run the following command:
+Whenever a new module repo is created or any time you want to make sure our repos have the right labels on them you can run the following command after adding the module to `modules.json`:
 
 ```bash
-# Temp workaround for changes that were made
-git checkout 80822a5664e07643b141f5813ef7a4d1a20a12be
-bundle exec ruby labels.rb -n ploperations -r '^ploperations-' -f -d
+bundle exec ruby labels.rb --file {PATH_TO_repo_standards}/modules.json --fix-labels --delete-labels
 ```
 
 This will add or correct all needed labels and remove any extras.
