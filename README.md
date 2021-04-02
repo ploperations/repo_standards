@@ -3,15 +3,13 @@
 All repos within ploperations should follow these standards as closely as
 possible to ensure a consistent experience across all projects
 
-#### Table of Contents
-
 - [Creating a new repo](#creating-a-new-repo)
   - [Repo creation](#repo-creation)
   - [Label setup](#label-setup)
   - [Settings in the GitHub interface](#settings-in-the-github-interface)
   - [Integrate with Jira](#integrate-with-jira)
 - [Puppet module standards](#puppet-module-standards)
-  - [PDK](#pdk)
+  - [PDK & GitHub Actions](#pdk--github-actions)
   - [metadata.json](#metadatajson)
   - [Testing](#testing)
   - [Documentation](#documentation)
@@ -37,17 +35,17 @@ git push -u origin main
 
 ### Label setup
 
-We utilize a standardized set of labels to facilitate using GitHub Changelog Generator. These are maintained via `labels.rb` in [underscorgan/community_management](https://github.com/underscorgan/community_management). To set it up you will have to create a personal access token with the repo box checked.
+We utilize a standardized set of labels to facilitate using GitHub Changelog Generator. These are maintained via `labels.rb` in [puppetlabs/community_management](https://github.com/puppetlabs/community_management). To set it up you will have to create a personal access token with the repo box checked.
 
-Whenever a new module repo is created or any time you want to make sure our repos have the right labels on them you can run the following command after adding the module to `modules.json`:
+Whenever a new module repo is created or any time you want to make sure our repos have the right labels on them you can run the following command:
 
 ```bash
-bundle exec ruby labels.rb --file {PATH_TO_repo_standards}/modules.json --fix-labels --delete-labels
+bundle exec ruby labels.rb -n ploperations -r '^ploperations-' -f -d
 ```
 
 This will add or correct all needed labels and remove any extras.
 
-There is also a company blog post about using this tool at https://puppet.com/blog/how-github-labels-streamline-puppet-module-release-process
+There is also a [company blog post](https://puppet.com/blog/how-github-labels-streamline-puppet-module-release-process) about using this tool.
 
 ### Settings in the GitHub interface
 
@@ -56,16 +54,17 @@ these settings:
 
 1. Configure protected branch rules:
     1. Navigate to `Settings --> Branches` and click `Add rule`
-    1. In the `Branch name pattern` box type `main`
-    1. Under `Protect matching branches` check all 5 boxes. Set them as shown here:
+    2. In the `Branch name pattern` box type `main`
+    3. Under `Protect matching branches` check all 5 boxes. Set them as shown here:
+
       ![rule-settings-image](rule-settings-image.png)
-    1. Click the green `Create` button at the bottom
-1. Automatically delete merged branches
-    1. Navigate to `Settings --> Options --> Merge button` and enable `Automatically delete head branches`.
+    4. Click the green `Create` button at the bottom
+2. Automatically delete merged branches
+    - Navigate to `Settings --> Options --> Merge button` and enable `Automatically delete head branches`.
 
 ### Integrate with Jira
 
-Please follow the instructions at https://confluence.puppetlabs.com/display/HELP/GitHub in the section titled "Integrating GitHub Repos with Jira via JIRA DVCS" to setup integration with Jira.
+Please follow the instructions in [confluence](https://confluence.puppetlabs.com/display/HELP/GitHub) in the section titled "Integrating GitHub Repos with Jira via JIRA DVCS" to setup integration with Jira.
 
 ## Puppet module standards
 
@@ -74,9 +73,10 @@ Please follow the instructions at https://confluence.puppetlabs.com/display/HELP
 It is expected that all modules here are utilizing the [PDK](https://puppet.com/docs/pdk/latest). `pdk validate` and `pdk test unit` is expected to pass both locally and via GitHub Actions with the file `ci.yml` included in this repo.
 
 Setup PDK and GitHub Actions:
+
 1. Copy `templates/ci.yml` in this repo to the destination repo to `.github/workflows/ci.yml`
-1. Copy `templates/.sync.yml` in this repo to the root of the destination repo.
-    1. You can now run `pdk update` or `pdk convert` to update the repo with the standard settings.
+2. Copy `templates/.sync.yml` in this repo to the root of the destination repo.
+    - You can now run `pdk update` or `pdk convert` to update the repo with the standard settings.
 
 ### metadata.json
 
