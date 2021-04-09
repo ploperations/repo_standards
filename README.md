@@ -55,7 +55,7 @@ these settings:
 1. Configure protected branch rules:
     1. Navigate to `Settings --> Branches` and click `Add rule`
     2. In the `Branch name pattern` box type `main`
-    3. Under `Protect matching branches` check all 5 boxes. Set them as shown here:
+    3. Under `Protect matching branches` change settings to match the screenshot below (the required checks text will not appear until after the first CI job has run):
 
       ![rule-settings-image](rule-settings-image.png)
     4. Click the green `Create` button at the bottom
