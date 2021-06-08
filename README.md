@@ -61,6 +61,7 @@ these settings:
     4. Click the green `Create` button at the bottom
 2. Automatically delete merged branches
     - Navigate to `Settings --> Options --> Merge button` and enable `Automatically delete head branches`.
+3. Add the `FORGE_API_KEY` secret from 1Password to `Settings --> Secrets --> Repository secrets`.
 
 ### Integrate with Jira
 
@@ -70,12 +71,12 @@ Please follow the instructions in [confluence](https://confluence.puppetlabs.com
 
 ### PDK & GitHub Actions
 
-It is expected that all modules here are utilizing the [PDK](https://puppet.com/docs/pdk/latest). `pdk validate` and `pdk test unit` is expected to pass both locally and via GitHub Actions with the file `ci.yml` included in this repo.
+It is expected that all modules here are utilizing the [PDK](https://puppet.com/docs/pdk/latest). `pdk validate` and `pdk test unit` is expected to pass both locally and via GitHub Actions with the file `pr_test.yml` included in this repo.
 
 Setup PDK and GitHub Actions:
 
-1. Copy `templates/ci.yml` in this repo to the destination repo to `.github/workflows/ci.yml`
-2. Copy `templates/.sync.yml` in this repo to the root of the destination repo.
+1. Copy `templates/pr_test.yml` and `templates/release.yml` to the destination repo in the `.github/workflows` directory.
+2. Copy `templates/.sync.yml` to the root of the destination repo.
     - You can now run `pdk update` or `pdk convert` to update the repo with the standard settings.
 
 ### metadata.json
@@ -120,7 +121,7 @@ It is expected that every module will have the following:
     ![](https://img.shields.io/puppetforge/pdk-version/ploperations/<MODULE-NAME>.svg?style=popout)
     ![](https://img.shields.io/puppetforge/v/ploperations/<MODULE-NAME>.svg?style=popout)
     ![](https://img.shields.io/puppetforge/dt/ploperations/<MODULE-NAME>.svg?style=popout)
-    [![Build Status](https://github.com/ploperations/ploperations-<MODULE-NAME>/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ploperations/ploperations-<MODULE-NAME>/actions/workflows/ci.yml)
+    [![Build Status](https://github.com/ploperations/ploperations-<MODULE-NAME>/actions/workflows/pr_test.yml/badge.svg?branch=main)](https://github.com/ploperations/ploperations-<MODULE-NAME>/actions/workflows/pr_test.yml)
     ```
 
   - this at the bottom:
@@ -151,6 +152,10 @@ All modules should contain a `LICENSE` file. Generally, an Apache 2.0 license sh
 ### Puppet Forge
 
 Once all the above have been done it is expected that modules are deployed to the Puppet Forge under the `ploperations` user. Once that initial push has been done it is also expected that the `Puppetfile` in our control repo pulls from the Forge.
+
+Using the provided GitHub Actions template, a workflow can be manually triggered to tag a release on GitHub and publish the module to The Forge using the version specified in `metadata.json`.
+
+To trigger the workflow navigate to `Actions --> Workflows --> Publish Module --> Run workflow with main branch`. This workflow uses the `FORGE_API_KEY` setup in step 3 of the [Settings in the GitHub interface](#settings-in-the-github-interface).
 
 ## Contributions to these standards
 
