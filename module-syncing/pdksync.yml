@@ -1,0 +1,5 @@
+---
+namespace: 'ploperations'
+git_base_uri: 'git@github.com'
+module_is_authoritive: false
+

@@ -1,0 +1,16 @@
+---
+- ploperations-account
+- ploperations-bash
+- ploperations-classification
+- ploperations-consul_data
+- ploperations-github
+- ploperations-haproxy_consul
+- ploperations-meta_motd
+- ploperations-profile_metadata
+- ploperations-puppet_runner
+- ploperations-ssh
+- ploperations-ssl
+- ploperations-unicorn
+- ploperations-webhook_proxy
+- ploperations-zsh
+
