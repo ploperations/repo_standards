@@ -20,6 +20,10 @@ At this point in time we are utilizing [pdksync](https://github.com/puppetlabs/p
       - [Most modules were unchanged with regards to the puppet version](#most-modules-were-unchanged-with-regards-to-the-puppet-version)
     - [GH Actions added or removed](#gh-actions-added-or-removed)
 - [Bulk releases](#bulk-releases)
+  - [Cloning all modules](#cloning-all-modules-1)
+  - [Update REFERENCE.md](#update-referencemd)
+  - [Release prep](#release-prep)
+  - [Release changed modules](#release-changed-modules)
 
 ## Prep work
 
@@ -141,4 +145,46 @@ If you have added or removed a GitHub action to a repo then you will need to do 
 
 ## Bulk releases
 
-TODO: fill this in
+### Cloning all modules
+
+You can get a copy of each managed module cloned to `./modules_pdksync` by running `bundle exec rake git:clone_managed_modules`.
+
+### Update REFERENCE.md
+
+Run `./mass-run-puppet-strings.sh` and address any instances where it says `undocumented` or `[warn]` as those will cause the release workflow to fail. Rerun the script until it tells you it has finished successfully.
+
+### Release prep
+
+Module version bumping is solely dependant on what has been done since the last release. Thus, this is going to be a slightly more manual process than the previous parts.
+
+First, do a preliminary update to the changelog on all modules so you can see what kinds of PRs have been merged: `./mass-pdk-commands.sh bundle exec rake changelog` Check the output of this command for any errors or unexpected instances of it saying no tags were found.
+
+Once that has run successfully, `cd` to each module's directory and do the following:
+
+1. Inspect the current CHANGELOG.md. You can do this by running `git diff CHANGELOG.md` (if there is no diff, skip the steps below and move on to the next module). While inspecting the diff, keep the following in mind (listed here in precedence order):
+   - the "Uncategorized PRs" heading means you need to add a label on GitHub and re-update the changelog.
+   - the "Changed" heading being present means a major / "X" version bump is needed. Run `pdk bundle exec rake module:bump:major`
+   - the "Added" heading being present means a minor / "Y" version bump is needed. Run `pdk bundle exec rake module:bump:minor`
+     - Note that major new features may warrant a major version bump.
+   - the "Fixed" heading being present means a patch / "Z" version bump is needed. Run `pdk bundle exec rake module:bump:patch`
+2. Once you have done the version bump, run `pdk bundle exec rake changelog` and review the output for errors again.
+3. Run `git diff` to verify the finalized changelogs and everything else looks as expected.
+4. Run `git switch -c release-prep` to create a branch for your work and to change to it.
+5. Run `git add . && git commit -a -m "$(jq .version -r metadata.json) release prep"`
+6. Run `hub pull-request --push --browse --labels maintenance` to push your work to GitHub and open a pull request.
+
+Repeat this process for all remaining modules.
+
+### Release changed modules
+
+After release prep pull requests are approved and/or merged you can go to the "Actions" tab in GitHub and kick off the release workflow that will validate everything, tag the repo with the new version, and push a new version to the Puppet Forge. This can also be done via the [GitHub CLI tool](https://cli.github.com) using a process like the one below:
+
+1. `cd` from this directory into the first changed module's directory
+2. Run `gh pr status` and check to see what the status is of your pull request.
+   - if approved and CI is green: Run `gh pr merge --merge --delete` to merge your module with a merge commit and then delete the branch
+   - if merged: move on to the next step
+3. Run `gh workflow run release.yml` to kick off the release process
+4. `cd` to next changed module and repeat.
+5. Once all workflows have been kicked off, return to the first module's directory
+6. Run `gh run list --workflow 'Publish Module'` to check the status of the release process
+7. `cd` to next changed module and repeat.
