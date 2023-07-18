@@ -1,6 +1,9 @@
 name: Publish Module
 
-on: workflow_dispatch
+on:
+  workflow_call:
+# In the repo that uses this workflow, this should be set to
+# on: workflow_dispatch
 
 jobs:
   publish-module:
