@@ -1,0 +1,8 @@
+name: PR Testing
+
+on:
+  - pull_request
+
+jobs:
+  test:
+   uses: ploperations/repo_standards/.github/workflows/pr_test.yml@main
