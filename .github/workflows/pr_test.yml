@@ -17,7 +17,7 @@ jobs:
 
     name: Puppet ${{ matrix.puppet_versions }}
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Install the PDK
       run: |
         source /etc/os-release
